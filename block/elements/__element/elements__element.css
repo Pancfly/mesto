@@ -1,0 +1,16 @@
+.elements__element {
+    max-width: 282px;
+    min-height: 361px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #fff;
+    color: #000;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: min-content 1fr;
+    grid-column-gap: 10px;
+    align-items: center;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
