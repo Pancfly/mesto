@@ -1,5 +1,5 @@
 .header {
-    width: 880px;
+    max-width: 880px;
     min-height: 74px;
     margin: 0 auto;
     padding: 45px 0 0;
@@ -7,4 +7,16 @@
     align-items: flex-start;
     justify-content: flex-start;
     border-bottom: 1px solid #545454;
+}
+
+@media screen and (max-width: 1023px) {
+    .header {
+        padding: 28px 0 0 27px;
+    }    
+}
+
+@media screen and (max-width: 767px) {
+    .header {
+        min-height: 56px;
+    }
 }

@@ -7,3 +7,10 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@media screen and (max-width: 767px) {
+    .footer__copyright {
+        font-size: 14px;
+        line-height: 17px;
+    }
+}

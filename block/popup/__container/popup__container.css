@@ -10,3 +10,10 @@
     border-radius: 10px;
     box-sizing: border-box;
 }
+
+@media screen and (max-width: 767px) {
+    .popup__container {
+        max-width: 282px;
+        min-height: 322px;
+    }
+}

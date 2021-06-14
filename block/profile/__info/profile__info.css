@@ -10,3 +10,16 @@
     align-items: end;
     grid-column: 2;
 }
+
+@media screen and (max-width: 767px) {
+    .profile__info {
+        padding-top: 26px;
+        padding-bottom: 36px;
+        grid-column-gap: 10px;
+        grid-row-gap: 14px;
+        align-items: center;
+        justify-items: center;
+        grid-column: 1;
+        grid-row: 2;
+    }
+}

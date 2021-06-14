@@ -3,3 +3,9 @@
     border-radius: 50%;
     grid-column: 1;
 }
+
+@media screen and (max-width: 767px) {
+    .profile__avatar {
+        grid-row: 1;
+    }
+}

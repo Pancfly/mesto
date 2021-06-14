@@ -7,3 +7,12 @@
     border-radius: 2px;
     grid-column: 3;
 }
+
+@media screen and (max-width: 767px) {
+    .profile__button_action_add {
+        width: 282px;
+        background-size: 16px 16px;
+        grid-column: 1;
+        grid-row: 3;
+    }
+}

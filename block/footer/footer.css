@@ -6,3 +6,15 @@
     align-items: flex-start;
     justify-content: flex-start;
 }
+
+@media screen and (max-width: 1023px) {
+    .footer {
+        padding-left: 19px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .footer {
+        padding: 48px 0 36px 19px;
+    }
+}
