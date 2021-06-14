@@ -2,7 +2,7 @@
     width: 24px;
     height: 24px;
     margin: 0;
-    background-image: url(../../../../images/button/pen.png);
+    background-image: url(../../../../images/button/pen.svg);
     background-size: 10px 10px;
     border: 1px solid #fff;
     grid-column: 2;
@@ -14,5 +14,6 @@
         width: 18px;
         height: 18px;
         background-size: 7.5px 7.5px;
+        justify-self:flex-start;
     }
 }

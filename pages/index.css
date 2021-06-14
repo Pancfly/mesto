@@ -23,7 +23,7 @@
 @import url(../block/elements/__title/elements__title.css);
 @import url(../block/elements/__button/elements__button.css);
 @import url(../block/elements/__button/_like/elements__button_like.css);
-@import url(../block/elements/__button/_like/elements__button_like-active.css);
+@import url(../block/elements/__button/_like-active/elements__button_like-active.css);
 /*footer*/
 @import url(../block/footer/footer.css);
 @import url(../block/footer/__copyright/footer__copyright.css);
