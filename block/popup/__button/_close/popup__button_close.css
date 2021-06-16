@@ -5,6 +5,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-color: #000;
+    border-radius: 8px;
     position: absolute;
     top: -40px;
     right: -40px;
@@ -14,6 +15,6 @@
     .popup__button_close {
         width: 26px;
         height: 26px;
-        right: 0;
+        right: 7px;
     }
 }

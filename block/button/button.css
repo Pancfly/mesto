@@ -1,3 +1,4 @@
+/*Через общий класс button я реализую :hover эффект сразу для всех кнопок*/
 .button {
     box-sizing: border-box;
     padding: 0;

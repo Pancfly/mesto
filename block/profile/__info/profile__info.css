@@ -7,7 +7,7 @@
     grid-template-rows: min-content min-content;
     grid-column-gap: 18px;
     grid-row-gap: 16px;
-    align-items: end;
+    align-items: center;
     grid-column: 2;
 }
 
@@ -17,7 +17,6 @@
         padding-bottom: 36px;
         grid-column-gap: 10px;
         grid-row-gap: 14px;
-        align-items: center;
         justify-items: center;
         grid-column: 1;
         grid-row: 2;
