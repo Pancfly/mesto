@@ -6,4 +6,7 @@
     background-image: url(../../../../images/button/vector.svg);
     background-repeat: no-repeat;
     background-position: center;
+    background-color: unset;
+    grid-column: 2;
+    grid-row: 2;
 }
