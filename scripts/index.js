@@ -71,13 +71,13 @@ function createCard(cardData) {
     return element;
 }
   
-function cardPlacement (element) {
+function placementCard (element) {
     elements.prepend(element);
 }
   
 initialCards.forEach(cardData => {
     const element = createCard(cardData);
-    cardPlacement(element);
+    placementCard(element);
 })
   
 function deleteCard (evt) {
@@ -95,14 +95,14 @@ function handleOpenAddCardPopup () {
     cardImageSrc.value = '';
 }
   
-function elementsInfoEdit (event) {
+function editInfoElements (event) {
     event.preventDefault();
     const element = createCard({
       name: cardTitle.value,
       link: cardImageSrc.value,
     });
     popupToggle(popupElements);
-    cardPlacement(element);
+    placementCard(element);
 }
 
 /* ф-и fullscreen*/
@@ -140,4 +140,4 @@ popupFormEdit.addEventListener('submit', editNameAbout);
 popupOpenButtonElement.addEventListener('click', handleOpenAddCardPopup);
 popupCloseButtonElement.addEventListener('click', () => popupToggle(popupElements));
 fullscreenCloseButton.addEventListener('click', () => popupToggle(popupFullscreen));
-cardData.addEventListener('submit', elementsInfoEdit);
+cardData.addEventListener('submit', editInfoElements);
