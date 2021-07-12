@@ -2,9 +2,10 @@
 const content = document.querySelector('.content');
 const profile = content.querySelector('.profile');
 const popupEditOpen = profile.querySelector('.profile__button_action_edit');
+const popupList = document.querySelectorAll('.popup');
 const popupElementEdit = document.querySelector('.popup-edit');
 const popupEditClose = popupElementEdit.querySelector('.popup__button_close-edit');
-const popupFormEdit = popupElementEdit.querySelector('.popup__input');
+const popupFormEdit = popupElementEdit.querySelector('.popup__profile-form');
 let profileName = profile.querySelector('.profile__name');
 let profileAbout = profile.querySelector('.profile__about');
 let inputName = popupFormEdit.querySelector('.popup__text_type_name');
@@ -44,13 +45,17 @@ const initialCards = [
         name: 'Байкал',
         link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
     }
-  ];
+];
 
 /*переменные fullscreen попапа*/
 const popupFullscreen = document.querySelector('.popup_type_fullscreen');
 const fullscreenImage = document.querySelector('.popup__fullscreen-image');
 const fullscreenText = document.querySelector('.popup__fullscreen-text');
 const fullscreenCloseButton = document.querySelector('.popup__button_close-fullscreen');
+
+/*константа*/
+const escKeyCode = 'Escape';
+const openPopupSelector = 'popup_is-opened';
 
 /*ф-я слушатель*/
 function addEventListeners (element) {
@@ -70,74 +75,160 @@ function createCard(cardData) {
     addEventListeners(element);
     return element;
 }
-  
+
 function placementCard (element) {
     elements.prepend(element);
 }
-  
+
 initialCards.forEach(cardData => {
     const element = createCard(cardData);
     placementCard(element);
 })
-  
+
 function deleteCard (evt) {
     const element = evt.target.closest('.elements__element')
     element.remove();
 }
-  
+
 function likeCard (evt) {
     evt.target.classList.toggle('elements__button_like-active');
 }
-  
-function handleOpenAddCardPopup () {
-    popupToggle(popupElements);
-    cardTitle.value = '';
-    cardImageSrc.value = '';
-}
-  
+
 function editInfoElements (event) {
     event.preventDefault();
     const element = createCard({
       name: cardTitle.value,
       link: cardImageSrc.value,
     });
-    popupToggle(popupElements);
+    closePopupElements(popupElements);
     placementCard(element);
 }
 
-/* ф-и fullscreen*/
-function openFullscreen (evt) {
-    const element = evt.target.closest('.elements__image');
-    fullscreenImage.src = element.src;
-    fullscreenText.textContent = element.alt;
-    popupToggle(popupFullscreen);
+/*Esc ф-я*/
+function handlerEscKey(evt) {
+    if (evt.key === escKeyCode) {
+        if (popupElements.classList.contains(openPopupSelector)) {
+            closePopup(popupElements);
+        } else if (popupElementEdit.classList.contains(openPopupSelector)) {
+            closePopup(popupElementEdit);
+        } else if (popupFullscreen.classList.contains(openPopupSelector)) {
+            closePopup(popupFullscreen);
+        }
+    }
 }
 
-const popupToggle = function (popup) {
-    popup.classList.toggle('popup_is-opened');
+popupList.forEach(popup => {
+    popup.addEventListener('keydown', handlerEscKey)
+})
+
+/*Закрытие popup при клике на пустое место*/
+function handlerEvent(evt) {
+    if (evt.target.classList.contains('popup')) {
+        closePopup(evt.target);
+    }
+  }
+
+function addInputListener(element) {
+    const formInputs = Array.from(element.querySelectorAll('.popup__text'));
+    formInputs.forEach(element => {
+        element.addEventListener('input', listenerEventInput);
+    })
 }
 
-/*открытие*/
-function handleOpenProfilePopup() {
-    popupToggle(popupElementEdit);
+function removeInputListener(element) {
+    const formInputs = Array.from(element.querySelectorAll('.popup__text'));
+    formInputs.forEach(element => {
+        element.removeEventListener('input', listenerEventInput);
+    })
+}
+
+/*Ф-я убирающая сообщение об ошибке*/
+function setDefaultErrorState(formElement) {
+    const inputList = Array.from(formElement.querySelectorAll('.popup__text'));
+    inputList.forEach((inputElement) => {
+    if (inputElement.matches('.popup__text_type_error')) {
+        hideInputError(formElement, inputElement);
+    };
+  });
+}
+
+/*Ф-я открытия popup*/
+function openPopup(element) {
+    addInputListener(element);
+    element.classList.add('popup_is-opened');
+    element.addEventListener('click', handlerEvent);
+    document.addEventListener('keydown', handlerEscKey);
+}
+
+/*Ф-я закрытия popup*/
+function closePopup(element) {
+    removeInputListener(element);
+    element.classList.remove('popup_is-opened');
+    element.removeEventListener('click', handlerEvent);
+    document.removeEventListener('keydown', handlerEscKey);
+}
+
+/*Ф-и упрощения*/
+function initializeProfileInfo() {
     inputName.value = profileName.textContent;
     inputAbout.value = profileAbout.textContent;
 }
 
-/*редактирование с сохранением*/
+function emptyInputValue(element) {
+    const inputs = Array.from(element.querySelectorAll('.popup__text'));
+    inputs.forEach(elem => {
+        elem.value = '';
+    })
+}
+
+/*Ф-и открытия и закрытия с проверкой валидности*/
+function openProfilePopup() {
+    initializeProfileInfo()
+    openCheckValidity(popupFormEdit);
+    openPopup(popupElementEdit);
+}
+
+function openPopupElements() {
+    emptyInputValue(cardData);
+    openCheckValidity(cardData);
+    openPopup(popupElements);
+}
+
+function openFullscreen(evt) {
+    const element = evt.target.closest('.elements__image');
+    fullscreenImage.src = element.src;
+    fullscreenText.textContent = element.alt;
+    openPopup(popupFullscreen);
+}
+
+function closeProfilePopup() {
+    closePopup(popupElementEdit);
+    setDefaultErrorState(popupFormEdit)
+}
+
+function closePopupElements() {
+    closePopup(popupElements);
+    setDefaultErrorState(cardData);
+}
+
+function closeFullscreen() {
+    closePopup(popupFullscreen);
+}
+
+/*Ф-я редактирования данных профиля*/
 function editNameAbout (evt) {
     evt.preventDefault();
     profileName.textContent = inputName.value;
     profileAbout.textContent = inputAbout.value;
-    popupToggle(popupElementEdit);
+    closeProfilePopup();
 }
 
 /*вызов*/
-popupEditOpen.addEventListener('click', handleOpenProfilePopup);
-popupEditClose.addEventListener('click', () => popupToggle(popupElementEdit));
+popupEditOpen.addEventListener('click', openProfilePopup);
+popupEditClose.addEventListener('click', closeProfilePopup);
 popupFormEdit.addEventListener('submit', editNameAbout);
 
-popupOpenButtonElement.addEventListener('click', handleOpenAddCardPopup);
-popupCloseButtonElement.addEventListener('click', () => popupToggle(popupElements));
-fullscreenCloseButton.addEventListener('click', () => popupToggle(popupFullscreen));
+popupOpenButtonElement.addEventListener('click', openPopupElements);
+popupCloseButtonElement.addEventListener('click', closePopupElements);
+fullscreenCloseButton.addEventListener('click', closeFullscreen);
 cardData.addEventListener('submit', editInfoElements);

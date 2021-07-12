@@ -41,10 +41,14 @@
             <div class="popup__container">
                 <button type="button" class="popup__button popup__button_close popup__button_close-edit"></button>
                 <h3 class="popup__title">Редактировать профиль</h3>
-                <form class="popup__input" name="info">
-                    <input type="text" name="name" placeholder="Имя" class="popup__text popup__text_type_name">
-                    <input type="text" name="about" placeholder="О себе" class="popup__text popup__text_type_about">
-                    <button type="submit" class="popup__button popup__button_submit">Сохранить</button>
+                <form class="popup__input popup__profile-form" name="info" novalidate>
+                    <fieldset class="popup__fieldset">
+                        <input type="text" name="profile-name" placeholder="Имя" id="profile-name" class="popup__text popup__text_type_name" required minlength="2" maxlength="40">
+                        <span class='popup__text-error' id='profile-name-error'></span>
+                        <input type="text" name="profile-about" placeholder="О себе" id="profile-about" class="popup__text popup__text_type_about" required minlength="2" maxlength="200">
+                        <span class='popup__text-error' id='profile-about-error'></span>
+                        <button type="submit" class="popup__button popup__button_submit">Сохранить</button>
+                    </fieldset>
                 </form>
             </div>
         </div>
@@ -53,10 +57,14 @@
             <div class="popup__container">
                 <button type="button" class="popup__button popup__button_close popup__button_close-add"></button>
                 <h3 class="popup__title">Новое место</h3>
-                <form class="popup__input popup__elements-form" name="photo">
-                    <input type="text" name="name" placeholder="Название" class="popup__text popup__card-name">
-                    <input type="url" name="link" placeholder="Ссылка на картинку" class="popup__text popup__card-src">
-                    <button type="submit" class="popup__button popup__button_submit">Создать</button>
+                <form class="popup__input popup__elements-form" name="card" novalidate>
+                    <fieldset class="popup__fieldset">
+                        <input type="text" name="card-name" placeholder="Название" id="card-name" class="popup__text popup__card-name" required minlength="2" maxlength="30">
+                        <span class='popup__text-error' id='card-name-error' role="status" aria-live="polite"></span>
+                        <input type="url" name="card-link" placeholder="Ссылка на картинку" id="card-link" class="popup__text popup__card-src" required>
+                        <span class='popup__text-error' id='card-link-error' role="status" aria-live="polite"></span>
+                        <button type="submit" class="popup__button popup__button_submit">Создать</button>
+                    </fieldset>
                 </form>
             </div>
         </div>
@@ -78,6 +86,7 @@
             <button type="button" class="elements__button elements__button_like"></button>
         </div>        
     </template>
-    <script src="./scripts/index.js"></script> 
+    <script src="./scripts/index.js"></script>
+    <script src="./scripts/validate.js"></script> 
 </body>
 </html>
