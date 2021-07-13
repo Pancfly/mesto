@@ -26,6 +26,14 @@ function hideInputError(formElement, inputElement) {
     errorElement.textContent = '';
 }
 
+function setDefaultErrorState(popup, settingsObject) {
+    const formElement = popup.querySelector(settingsObject.formSelector);
+    const inputList = popup.querySelectorAll(settingsObject.inputSelector);
+    inputList.forEach((inputElement) => {
+        hideInputError(formElement, inputElement);
+    })
+}
+
 function hasInvalidInput(formInputs) {
     return formInputs.some(inputElement => {
         return !inputElement.validity.valid;
@@ -50,44 +58,29 @@ function toggleSubmitButtonState(formInputs, formSubmitButton) {
     }
 }
 
-function listenerEventInput(evt) {
-    const formElement = evt.target.form;
-    const inputElement = evt.srcElement;
-    const formInputs = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
-    const formSubmitButton = formElement.querySelector(validationSettings.submitButtonSelector);
-    checkInputValidity(formElement, inputElement);
-    toggleSubmitButtonState(formInputs, formSubmitButton);
-}
-
-function openCheckValidity(formElement) {
-    const formInputs = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
-    const formSubmitButton = formElement.querySelector(validationSettings.submitButtonSelector);
-    formInputs.forEach((inputElement) => {
-        checkInputValidity(formElement, inputElement);
-    });
-    toggleSubmitButtonState(formInputs, formSubmitButton);
-};
-
 function setEventListeners(formElement) {
     const formInputs = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
     const formSubmitButton = formElement.querySelector(validationSettings.submitButtonSelector);
     toggleSubmitButtonState(formInputs, formSubmitButton);
     formInputs.forEach(inputElement => {
-        inputElement.addEventListener('input', listenerEventInput);
-    })
+        inputElement.addEventListener('input', () => {
+            checkInputValidity(formElement, inputElement);
+            toggleSubmitButtonState(formInputs, formSubmitButton);
+        });
+    });
 }
 
 function enableValidation(settingsObject) {
     const formsList = Array.from(document.querySelectorAll(settingsObject.formSelector));
     formsList.forEach(formElement => {
-        formElement.addEventListener('submit', function (evt) {
+        formElement.addEventListener('submit', (evt) => {
             evt.preventDefault();
-        })
+        });
         const fieldsetList = Array.from(formElement.querySelectorAll(settingsObject.fieldsetSelector));
         fieldsetList.forEach(fieldset => {
             setEventListeners(fieldset);
-        })
-    })
+        });
+    });
 }
 
 enableValidation(validationSettings);

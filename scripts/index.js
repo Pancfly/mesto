@@ -6,10 +6,10 @@ const popupList = document.querySelectorAll('.popup');
 const popupElementEdit = document.querySelector('.popup-edit');
 const popupEditClose = popupElementEdit.querySelector('.popup__button_close-edit');
 const popupFormEdit = popupElementEdit.querySelector('.popup__profile-form');
-let profileName = profile.querySelector('.profile__name');
-let profileAbout = profile.querySelector('.profile__about');
-let inputName = popupFormEdit.querySelector('.popup__text_type_name');
-let inputAbout = popupFormEdit.querySelector('.popup__text_type_about');
+const profileName = profile.querySelector('.profile__name');
+const profileAbout = profile.querySelector('.profile__about');
+const inputName = popupFormEdit.querySelector('.popup__text_type_name');
+const inputAbout = popupFormEdit.querySelector('.popup__text_type_about');
 
 /*elements*/
 const popupElements = document.querySelector('.popup-add');
@@ -52,10 +52,6 @@ const popupFullscreen = document.querySelector('.popup_type_fullscreen');
 const fullscreenImage = document.querySelector('.popup__fullscreen-image');
 const fullscreenText = document.querySelector('.popup__fullscreen-text');
 const fullscreenCloseButton = document.querySelector('.popup__button_close-fullscreen');
-
-/*константа*/
-const escKeyCode = 'Escape';
-const openPopupSelector = 'popup_is-opened';
 
 /*ф-я слушатель*/
 function addEventListeners (element) {
@@ -106,14 +102,9 @@ function editInfoElements (event) {
 
 /*Esc ф-я*/
 function handlerEscKey(evt) {
-    if (evt.key === escKeyCode) {
-        if (popupElements.classList.contains(openPopupSelector)) {
-            closePopup(popupElements);
-        } else if (popupElementEdit.classList.contains(openPopupSelector)) {
-            closePopup(popupElementEdit);
-        } else if (popupFullscreen.classList.contains(openPopupSelector)) {
-            closePopup(popupFullscreen);
-        }
+    const popupOpened = document.querySelector('.popup_is-opened');
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+        closePopup(popupOpened);
     }
 }
 
@@ -126,35 +117,10 @@ function handlerEvent(evt) {
     if (evt.target.classList.contains('popup')) {
         closePopup(evt.target);
     }
-  }
-
-function addInputListener(element) {
-    const formInputs = Array.from(element.querySelectorAll('.popup__text'));
-    formInputs.forEach(element => {
-        element.addEventListener('input', listenerEventInput);
-    })
-}
-
-function removeInputListener(element) {
-    const formInputs = Array.from(element.querySelectorAll('.popup__text'));
-    formInputs.forEach(element => {
-        element.removeEventListener('input', listenerEventInput);
-    })
-}
-
-/*Ф-я убирающая сообщение об ошибке*/
-function setDefaultErrorState(formElement) {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__text'));
-    inputList.forEach((inputElement) => {
-    if (inputElement.matches('.popup__text_type_error')) {
-        hideInputError(formElement, inputElement);
-    };
-  });
 }
 
 /*Ф-я открытия popup*/
 function openPopup(element) {
-    addInputListener(element);
     element.classList.add('popup_is-opened');
     element.addEventListener('click', handlerEvent);
     document.addEventListener('keydown', handlerEscKey);
@@ -162,10 +128,10 @@ function openPopup(element) {
 
 /*Ф-я закрытия popup*/
 function closePopup(element) {
-    removeInputListener(element);
     element.classList.remove('popup_is-opened');
     element.removeEventListener('click', handlerEvent);
     document.removeEventListener('keydown', handlerEscKey);
+    setDefaultErrorState(element, validationSettings);
 }
 
 /*Ф-и упрощения*/
@@ -184,13 +150,11 @@ function emptyInputValue(element) {
 /*Ф-и открытия и закрытия с проверкой валидности*/
 function openProfilePopup() {
     initializeProfileInfo()
-    openCheckValidity(popupFormEdit);
     openPopup(popupElementEdit);
 }
 
 function openPopupElements() {
     emptyInputValue(cardData);
-    openCheckValidity(cardData);
     openPopup(popupElements);
 }
 
@@ -203,12 +167,10 @@ function openFullscreen(evt) {
 
 function closeProfilePopup() {
     closePopup(popupElementEdit);
-    setDefaultErrorState(popupFormEdit)
 }
 
 function closePopupElements() {
     closePopup(popupElements);
-    setDefaultErrorState(cardData);
 }
 
 function closeFullscreen() {
