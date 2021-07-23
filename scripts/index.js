@@ -111,7 +111,7 @@ function editInfoElements(evt) {
       name: cardName.value,
       link: cardLink.value,
     };
-    placementCard(element);
+    addGalleryCard(element);
     closePopupElements(popupElements);
 }
 
