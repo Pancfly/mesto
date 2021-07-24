@@ -64,23 +64,16 @@ function initializeProfileInfo() {
     inputAbout.value = profileAbout.textContent;
 }
 
-function emptyInputValue(element) {
-    const inputs = Array.from(element.querySelectorAll('.popup__text'));
-    inputs.forEach(elem => {
-        elem.value = '';
-    })
-}
-
 /*Ф-и открытия и закрытия*/
 function openProfilePopup() {
-    validatorProfile.setDefaultErrorState();
-    initializeProfileInfo();
     openPopup(popupElementEdit);
+    initializeProfileInfo();
+    validatorProfile.setDefaultErrorState();
 }
 
 function openPopupElements() {
+    popupFormAdd.reset();
     validatorElements.setDefaultErrorState();
-    emptyInputValue(popupFormAdd);
     openPopup(popupElements);
 }
 
@@ -112,7 +105,7 @@ function editInfoElements(evt) {
       link: cardLink.value,
     };
     addGalleryCard(element);
-    closePopupElements(popupElements);
+    closePopupElements();
 }
 
 popupEditOpen.addEventListener('click', openProfilePopup);
