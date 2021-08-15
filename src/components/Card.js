@@ -1,11 +1,9 @@
-import {openPopup} from './index.js';
-import {popupFullscreen, fullscreenImage, fullscreenText} from './consts.js'
-
-export class Card {
-    constructor(data, cardSelector) {
+export default class Card {
+    constructor(data, { cardSelector, handleCardClick }) {
         this._cardSelector = cardSelector;
         this._name = data.name;
         this._link = data.link;
+        this._handleCardClick = handleCardClick;
     }
 
     _getCardTemplate() {
@@ -34,7 +32,7 @@ export class Card {
             this._deleteCard(evt);
         })
         this._cardItem.querySelector('.elements__image').addEventListener('click', evt => {
-            this._openFullscreenCard(evt);
+            this._handleCardClick(evt);
         })
     }
 
@@ -45,12 +43,5 @@ export class Card {
     _deleteCard(evt) {
         const element = evt.target.closest('.elements__element')
         element.remove();
-    }
-
-    _openFullscreenCard(evt) {
-        fullscreenImage.src = this._link;
-        fullscreenImage.alt = this._name;
-        fullscreenText.textContent = this._name;
-        openPopup(popupFullscreen);
     }
 }
