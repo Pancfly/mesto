@@ -6,9 +6,9 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 import Section from '../components/Section.js';
 import { initialCards } from '../utils/initialCards.js';
-import { validationSettings, photoGallery, popupElementEdit, popupFormEdit, inputName, inputAbout, popupEditOpen,
-        profileName, profileAbout, popupElements, popupFormAdd, cardName, cardLink, popupAddOpen,
-        templateElements, popupFullscreen } from '../utils/constants.js';
+import { validationSettings, photoGallery, popupElementEdit, popupFormEdit, inputName,
+        inputAbout, popupEditOpen, profileName, profileAbout, popupElements, popupFormAdd,
+        popupAddOpen, templateElements, popupFullscreen } from '../utils/constants.js';
 
 const validatorProfile = new FormValidator(validationSettings, popupFormEdit);
 const validatorElements = new FormValidator(validationSettings, popupFormAdd);
@@ -16,6 +16,18 @@ const validatorElements = new FormValidator(validationSettings, popupFormAdd);
 /*вкючаем валидацию*/
 validatorProfile.enableValidation();
 validatorElements.enableValidation();
+
+/*создать карточку*/
+function createCard (element) {
+    const card = new Card(element, {
+        cardSelector: templateElements,
+        handleCardClick: (evt) => {
+            popupWithImage.open(evt);
+        }
+    });
+
+    return card.generateCard();
+}
 
 /*Создать экземпляра класса PopupWithImage*/
 const popupWithImage = new PopupWithImage(popupFullscreen);
@@ -26,14 +38,7 @@ popupWithImage.setEventListeners();
 const cardList = new Section({
     data: initialCards.reverse(),
     renderer: (item) => {
-        const card = new Card(item, {
-            cardSelector: templateElements,
-            handleCardClick: (evt) => {
-                popupWithImage.open(evt);
-            }
-        });
-    const cardElement = card.generateCard();
-    cardList.addItem(cardElement);
+    cardList.addItem(createCard(item));
     }
 }, photoGallery);
 
@@ -60,19 +65,11 @@ popupWithUserForm.setEventListeners();
 /*Создать экземпляр класса PopupWithForm для popupAdd*/
 const popupWithPhotoForm = new PopupWithForm(popupElements, {
     handleFormSubmit: (photoData) => {
-        const card = new Card(photoData, {
-            cardSelector: templateElements,
-            handleCardClick: (evt) => {
-                popupWithImage.open(evt);
-            }
-        });
-        const newCardElement = card.generateCard();
-        cardList.addItem(newCardElement);
+        cardList.addItem(createCard(photoData));
         popupWithPhotoForm.close();
     },
     setInputValues: () => {
-        cardName.value = '';
-        cardLink.value = '';
+        /*Можно пойти по пути меньшего сопротивления и оставить эту ф-ю пока пустой?*/
     }
 });
 
