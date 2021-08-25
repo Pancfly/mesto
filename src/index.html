@@ -17,7 +17,10 @@
         <main class="content">
             <!--Секция profile-->
             <section class="profile">
-                <div class="profile__avatar"></div>
+                <div class="profile__avatar-overlay">
+                    <img src="#" alt="Аватар пользователя" class="profile__avatar">
+                    <button type="button" class="profile__button profile__button_action_avatar-edit"></button>
+                </div>
                 <div class="profile__info">
                     <button type="button" class="profile__button profile__button_action_edit"></button>
                     <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -40,7 +43,7 @@
             <div class="popup__container">
                 <button type="button" class="popup__button popup__button_close popup__button_close-edit"></button>
                 <h3 class="popup__title">Редактировать профиль</h3>
-                <form class="popup__input popup__profile-form" name="info" novalidate>
+                <form class="popup__input popup__input_type_profile-form" name="info" novalidate>
                     <fieldset class="popup__fieldset">
                         <input type="text" name="name" placeholder="Имя" id="profile-name" class="popup__text" required minlength="2" maxlength="40">
                         <span class='popup__text-error' id='profile-name-error'></span>
@@ -56,7 +59,7 @@
             <div class="popup__container">
                 <button type="button" class="popup__button popup__button_close popup__button_close-add"></button>
                 <h3 class="popup__title">Новое место</h3>
-                <form class="popup__input popup__elements-form" name="card" novalidate>
+                <form class="popup__input popup__input_type_elements-form" name="card" novalidate>
                     <fieldset class="popup__fieldset">
                         <input type="text" name="name" placeholder="Название" id="card-name" class="popup__text" required minlength="2" maxlength="30">
                         <span class='popup__text-error' id='card-name-error' role="status" aria-live="polite"></span>
@@ -75,6 +78,31 @@
                 <p class="popup__fullscreen-text"></p>
             </div>
         </div>
+        <!--Секция popup для подтверждения удаления-->
+        <div class="popup popup_type_delete">
+            <div class="popup__container">
+                <button type="button" class="popup__button popup__button_close popup__button_close-del"></button>
+                <h3 class="popup__title">Вы уверены?</h3>
+                <form class="popup__input popup__input_type_delete-form" name="delete" novalidate>
+                    <button type="submit" class="popup__button popup__button_submit">Да</button>
+                </form>
+            </div>
+        </div>
+        <!--Секция popup для редактирования картинки аватара-->
+        <div class="popup popup_type_avatar">
+            <div class="popup__container">
+                <button type="button" class="popup__button popup__button_close popup__button_close-avatar"></button>
+                <h3 class="popup__title">Обновить аватар</h3>
+                <form class="popup__input popup__input_type_avatar-form" name="avatar" novalidate>
+                    <fieldset class="popup__fieldset">
+                        <input type="url" name="link" placeholder="Ссылка на картинку" id="link" class="popup__text" required/>
+                        <span class="popup__text-error" id="link-error" role="status" aria-live="polite"></span>
+                    </fieldset>
+                    <button type="submit" class="popup__button popup__button_submit">Сохранить</button>
+                </form>
+            </div>
+          </div>
+        </div>
     </div>
     
     <template class="template-elements">
@@ -82,7 +110,10 @@
             <img src="#" alt="Фотография Вашего поста" class="elements__image">
             <button type="button" class="elements__button elements__button_delete"></button>
             <h3 class="elements__title"></h3>
-            <button type="button" class="elements__button elements__button_like"></button>
+            <div class="elements__like-conteiner">
+                <button type="button" class="elements__button elements__button_like"></button>
+                <span class="elements__count"></span>
+            </div>
         </div>        
     </template>
 </body>
