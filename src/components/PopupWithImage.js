@@ -7,11 +7,10 @@ export default class PopupWithImage extends Popup {
         this._fullscreenText = this._popup.querySelector('.popup__fullscreen-text');
     }
 
-    open(evt) {
+    open(name, link) {
         super.open();   
-        const imageToZoom = evt.target;
-        this._fullscreenImg.src = imageToZoom.src;
-        this._fullscreenImg.alt = imageToZoom.alt;
-        this._fullscreenText.textContent = imageToZoom.alt;
+        this._fullscreenImg.src = link;
+        this._fullscreenImg.alt = name;
+        this._fullscreenText.textContent = name;
     }
 }
