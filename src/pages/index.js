@@ -97,14 +97,14 @@ const popupWithUserForm = new PopupWithForm(popupElementEdit, {
         popupWithUserForm.renderLoading(false);
         api.patchUserData(userData)
             .then((res) => {
-                userInfo.setUserInfo(res)
+                userInfo.setUserInfo(res);
+                popupWithUserForm.close();
             })
             .catch((err) => {
                 console.error(err);
             })
             .finally(() => {
                 popupWithUserForm.renderLoading(true);
-                popupWithUserForm.close();
             })
     }
 });
@@ -118,13 +118,13 @@ const popupWithPhotoForm = new PopupWithForm(popupElements, {
         api.postCard(photoData)
             .then((res) => {
                 cardList.addItem(createCard(res));
+                popupWithPhotoForm.close();
             })
             .catch((err) => {
                 console.error(err);
             })
             .finally(() => {
                 popupWithPhotoForm.renderLoading(true);
-                popupWithPhotoForm.close();
             })
     }
 });
@@ -138,13 +138,13 @@ const popupWithAvatarForm = new PopupWithForm(popupAvatar, {
         api.patchUserAvatar(data)
             .then((res) => {
                 userInfo.setNewAvatar(res);
+                popupWithAvatarForm.close();
             })
             .catch((err) => {
                 console.error(err);
             })
             .finally(() => {
                 popupWithAvatarForm.renderLoading(true);
-                popupWithAvatarForm.close();
             })
     }
 });
