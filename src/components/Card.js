@@ -83,14 +83,13 @@ export default class Card {
         }
     }
 
-    deleteCard() {
-        this._cardItem.closest('.elements__element').remove;
-        this._cardItem = null;
+    _deleteCard() {
+        this._confirmationDelete(this._id, this._cardItem);
     }
 
     _setEventListeners() {
         this._elementDelButton.addEventListener('click', () => {
-            this._confirmationDelete(this._id);
+            this._deleteCard();
         })
 
         this._elementLike.addEventListener('click', () => {

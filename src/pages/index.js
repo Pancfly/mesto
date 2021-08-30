@@ -23,8 +23,10 @@ validatorProfile.enableValidation();
 validatorElements.enableValidation();
 validatorAvatar.enableValidation();
 
+/*Создать экземпляра класса Api*/
 const api = new Api(apiSetting);
 
+/*Методы класса Api для получения данных*/
 api.getUserData()
     .then((res) => {
         userId = res._id;
@@ -43,7 +45,19 @@ api.getInitialCards()
         console.error(err);
     });
 
-const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard);
+/*Создать экземпляра класса PopupWithConfirmation*/
+const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, {
+    call: (id, data) => {
+        api.deleteCard(id)
+            .then(() => {
+                data.remove();
+                popupSubmit.close();
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }
+});
 
 popupDeleteElem.setEventListeners();
 
@@ -54,24 +68,15 @@ function createCard (data) {
         handleCardClick: () => {
             popupWithImage.open(data.name, data.link);
         },
-        confirmationDelete: (id) => {
-            popupDeleteElem.open();
-            popupDeleteElem.setSubmitAction(() => {
-                api.deleteCard(id)
-                    .then(() => {
-                        card.deleteCard();
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                    });
-            })
+        confirmationDelete: (id, data) => {
+            popupDeleteElem.open(id, data);
         }
     }, api, templateElements);
 
     return card.generateCard();
 }
 
-/*Создать экземпляра класса PopupWithImage*/
+/*Создать экземпляр класса PopupWithImage*/
 const popupWithImage = new PopupWithImage(popupFullscreen);
 
 popupWithImage.setEventListeners();
