@@ -45,21 +45,21 @@ api.getInitialCards()
         console.error(err);
     });
 
-/*Создать экземпляра класса PopupWithConfirmation*/
-const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, {
-    call: (id, data) => {
-        api.deleteCard(id)
-            .then(() => {
-                data.remove();
-                popupDeleteElem.close();
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-    }
-});
+const handleDeleteCard = (id, element) => {
+    api.deleteCard(id)
+    .then(() => {
+        element.remove();
+        popupDeleteElem.close();
+    })
+    .catch((err) => {
+        console.error(err);
+    })
+}
 
-//popupDeleteElem.setEventListeners();
+/*Создать экземпляра класса PopupWithConfirmation*/
+const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, handleDeleteCard);
+
+popupDeleteElem.setEventListeners();
 
 /*создать карточку*/
 function createCard (data) {
@@ -68,8 +68,8 @@ function createCard (data) {
         handleCardClick: () => {
             popupWithImage.open(data.name, data.link);
         },
-        confirmationDelete: (id, data) => {
-            popupDeleteElem.open(id, data);
+        confirmationDelete: (id, element) => {
+            popupDeleteElem.open(id, element);
         }
     }, api, templateElements);
 
@@ -83,8 +83,8 @@ popupWithImage.setEventListeners();
 
 /*Создать экземпляр класса Section для карточек*/
 const cardList = new Section({
-    renderer: (item) => {
-        cardList.addItem(createCard(item));
+    renderer: (data) => {
+        cardList.addItem(createCard(data));
     }
 }, photoGallery);
 
