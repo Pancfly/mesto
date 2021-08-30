@@ -51,7 +51,7 @@ const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, {
         api.deleteCard(id)
             .then(() => {
                 data.remove();
-                popupSubmit.close();
+                popupDeleteElem.close();
             })
             .catch((err) => {
                 console.error(err);
@@ -59,7 +59,7 @@ const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, {
     }
 });
 
-popupDeleteElem.setEventListeners();
+//popupDeleteElem.setEventListeners();
 
 /*создать карточку*/
 function createCard (data) {
