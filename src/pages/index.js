@@ -7,7 +7,6 @@ import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 import UserInfo from '../components/UserInfo.js';
 import Section from '../components/Section.js';
 import Api from '../components/Api.js';
-//import { initialCards } from '../utils/initialCards.js';
 import { validationSettings, apiSetting, photoGallery, popupElementEdit, popupFormEdit, inputName,
         inputAbout, popupEditOpen, profileName, profileAbout, profileAvatar, popupElements, popupFormAdd,
         popupAddOpen, templateElements, popupFullscreen, popupDeleteCard, popupAvatar, popupAvatarOpen } from '../utils/constants.js';
@@ -45,33 +44,54 @@ api.getInitialCards()
         console.error(err);
     });
 
-const handleDeleteCard = (id, element) => {
-    api.deleteCard(id)
-    .then(() => {
-        element.remove();
-        popupDeleteElem.close();
-    })
-    .catch((err) => {
-        console.error(err);
-    })
-}
-
 /*Создать экземпляра класса PopupWithConfirmation*/
-const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, handleDeleteCard);
+const popupDeleteElem = new PopupWithConfirmation(popupDeleteCard, (id, card) => {
+    api.deleteCard(id)
+        .then(() => {
+            card.deleteCard();
+            popupDeleteElem.close();
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+});
 
 popupDeleteElem.setEventListeners();
 
 /*создать карточку*/
-function createCard (data) {
-    const card = new Card({
-        data: { ...data, userId },
+function createCard (cardItem, userId) {
+    const card = new Card(cardItem, userId, templateElements, {
         handleCardClick: () => {
-            popupWithImage.open(data.name, data.link);
+            popupWithImage.open(cardItem)
         },
-        confirmationDelete: (id, element) => {
-            popupDeleteElem.open(id, element);
+        handleCardDelete: () => {
+            popupDeleteElem.open(cardItem._id, card)
+        },
+        handleCardLike: () => {
+            api.putLike(cardItem._id)
+                .then((res) => {
+                    card.setLikeCount(res.likes.length);
+                    card.handleLikeActive();
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+        },
+        handleCardUnlike: () => {
+            api.deleteLike(cardItem._id)
+                .then((res) => {
+                    if (res.likes.length === 0) {
+                        card.setLikeCount('');
+                    } else {
+                        card.setLikeCount(res.likes.length)
+                    };
+                    card.handleLikeActive();
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
         }
-    }, api, templateElements);
+    });
 
     return card.generateCard();
 }
@@ -83,8 +103,8 @@ popupWithImage.setEventListeners();
 
 /*Создать экземпляр класса Section для карточек*/
 const cardList = new Section({
-    renderer: (data) => {
-        cardList.addItem(createCard(data));
+    renderer: (cardItem, userId) => {
+        cardList.addItem(createCard(cardItem, userId));
     }
 }, photoGallery);
 
@@ -117,7 +137,7 @@ const popupWithPhotoForm = new PopupWithForm(popupElements, {
         popupWithPhotoForm.renderLoading(false);
         api.postCard(photoData)
             .then((res) => {
-                cardList.addItem(createCard(res));
+                cardList.addItem(createCard(res, res.owner._id));
                 popupWithPhotoForm.close();
             })
             .catch((err) => {
